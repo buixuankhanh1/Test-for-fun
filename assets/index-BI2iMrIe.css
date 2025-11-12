@@ -1,0 +1,184 @@
+/* === CSS RESET VÀ CẤU HÌNH GỐC === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #000;
+    font-family: Courier New, Consolas, Monaco, monospace;
+    color: #f00093; /* Màu Neon Pink đặc trưng */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* === CẤU TRÚC CHÍNH === */
+#app {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+}
+
+#terminal {
+    width: 90%;
+    max-width: 800px;
+    text-align: center;
+    font-size: 22px;
+    letter-spacing: .05em;
+    line-height: 1.6;
+    /* Hiệu ứng Glow cho chữ */
+    text-shadow: 0 0 5px #f00093, 0 0 10px rgba(240,0,147,.5);
+}
+
+/* === GIAO DIỆN TERMINAL (Prompt/Message) === */
+.prompt {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .2em;
+}
+
+.prompt.hidden {
+    display: none;
+}
+
+.message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .2em;
+}
+
+.message.hidden {
+    display: none;
+}
+
+/* === HIỆU ỨNG CON TRỎ (Cursor) === */
+.cursor {
+    display: inline-block;
+    color: #f00093;
+    animation: blink 1s step-end infinite;
+    font-weight: 700;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1 }
+    51%, to { opacity: 0 }
+}
+
+/* === HIỆU ỨNG SCANLINES (Giả lập màn hình CRT) === */
+.scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+    /* Tạo vân sọc ngang */
+    background: repeating-linear-gradient(0deg, rgba(255,255,255,.04), rgba(255,255,255,.04) 2px, transparent 2px, transparent 4px);
+    animation: scanline-move 15s linear infinite;
+    opacity: 1;
+}
+
+@keyframes scanline-move {
+    0% { transform: translateY(0) }
+    to { transform: translateY(4px) }
+}
+
+/* === OVERLAY 1: Hiệu ứng Vignette (Ánh sáng tối góc) === */
+body:before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,.3) 100%);
+    pointer-events: none;
+    z-index: 3;
+}
+
+/* === OVERLAY 2: Hiệu ứng Flicker (Nhấp nháy nhẹ) === */
+body:after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffffff03; /* Màu trắng trong suốt mờ */
+    pointer-events: none;
+    z-index: 4;
+    animation: flicker 3s ease-in-out infinite;
+}
+
+@keyframes flicker {
+    0%, to { opacity: .97 }
+    50% { opacity: 1 }
+}
+
+/* === BẢN QUYỀN (Copyright) === */
+.copyright {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translate(-50%);
+    font-size: 6px;
+    color: #333;
+    text-align: center;
+    line-height: 1.8;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 5;
+    max-width: 90%;
+    letter-spacing: .02em;
+}
+
+.copyright.show {
+    opacity: 1;
+    animation: copyright-fadein 1s ease-in forwards;
+}
+
+@keyframes copyright-fadein {
+    0% { opacity: 0 }
+    to { opacity: 1 }
+}
+
+/* === MEDIA QUERIES (Responsive Design) === */
+
+@media (max-width: 768px) {
+    #terminal {
+        font-size: 18px;
+        width: 95%;
+    }
+    /* Thêm thông báo "Tap to continue" cho thiết bị di động */
+    .prompt:before {
+        content: "Tap to continue";
+        position: absolute;
+        top: -3em;
+        left: 50%;
+        transform: translate(-50%);
+        font-size: .8em;
+        opacity: .7;
+    }
+    .copyright {
+        font-size: 5px;
+        bottom: 15px;
+    }
+}
+
+@media (min-width: 1200px) {
+    #terminal {
+        font-size: 24px;
+    }
+}
